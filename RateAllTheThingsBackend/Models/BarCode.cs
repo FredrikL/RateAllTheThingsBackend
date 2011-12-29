@@ -5,7 +5,7 @@ namespace RateAllTheThingsBackend.Models
 {
     public class BarCode
     {
-        public int Id { get; set; }
+        public Int64 Id { get; set; }
 
         public string Format { get; set; }
         public string Code { get; set; }
