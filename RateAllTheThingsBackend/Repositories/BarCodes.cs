@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace RateAllTheThingsBackend.Repositories
         public IEnumerable<BarCode> All()
         {
             IEnumerable<BarCode> barCodes = Enumerable.Empty<BarCode>();
-            using (SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"]))
+            using (SqlConnection connection = Connection())
             {
                 connection.Open();
                 barCodes = connection.Query<BarCode>("SELECT * FROM BarCodes");   
@@ -21,14 +22,47 @@ namespace RateAllTheThingsBackend.Repositories
             return barCodes;
         }
 
-        public BarCode Get(int id)
+        private static SqlConnection Connection()
         {
-            using (SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"]))
+            return new SqlConnection(ConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"]);
+        }
+
+        public BarCode Get(long id)
+        {
+            using (SqlConnection connection = Connection())
             {
                 connection.Open();
                 var barcode = connection.Query<BarCode>("SELECT TOP 1 * FROM BarCodes WHERE ID = @ID", new {ID = id}).Single();
                 return barcode;
             }
+        }
+
+        public BarCode Get(string format, string code)
+        {
+            using (SqlConnection connection = Connection())
+            {
+                connection.Open();
+                var barcodes = connection.Query<BarCode>("SELECT TOP 1 * FROM BarCodes WHERE Format = @FORMAT AND Code = @CODE", new { FORMAT = format, CODE = code }).ToArray();
+                if (barcodes.Any())
+                    return barcodes.First();
+                return null;
+            }
+        }
+
+        public BarCode Create(string format, string code)
+        {
+            using (SqlConnection connection = Connection())
+            {
+                connection.Open();
+
+                var id = connection.Query<decimal>("INSERT INTO BarCodes(Format, Code) values(@FORMAT, @CODE); SELECT SCOPE_IDENTITY();", new { FORMAT = format, CODE = code }).Single();
+                return this.Get((Int64)id);
+            }
+        }
+
+        public BarCode Update(BarCode originalCode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

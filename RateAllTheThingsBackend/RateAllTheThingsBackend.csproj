@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\BarCodeController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="External\SqlMapper.cs" />
     <Compile Include="External\TinyIoC.cs" />
     <Compile Include="Global.asax.cs">
@@ -69,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BarCodes.cs" />
     <Compile Include="Repositories\IBarCodes.cs" />
+    <Compile Include="Repositories\IComments.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

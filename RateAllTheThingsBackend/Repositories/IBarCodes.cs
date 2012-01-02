@@ -6,6 +6,9 @@ namespace RateAllTheThingsBackend.Repositories
     public interface IBarCodes
     {
         IEnumerable<BarCode> All();
-        BarCode Get(int id);
+        BarCode Get(long id);
+        BarCode Get(string format, string code);
+        BarCode Create(string format, string code);
+        BarCode Update(BarCode originalCode);
     }
 }

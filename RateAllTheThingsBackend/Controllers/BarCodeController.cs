@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using RateAllTheThingsBackend.Models;
 using RateAllTheThingsBackend.Repositories;
 
 namespace RateAllTheThingsBackend.Controllers
@@ -21,63 +18,26 @@ namespace RateAllTheThingsBackend.Controllers
             return Json(this.barCodes.All(), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Details(int id)
+        // return item, creates new if unknown
+        public ActionResult Details(string format, string code)
         {
-            return Json(this.barCodes.Get(id), JsonRequestBehavior.AllowGet);
-        }
-
-        //
-        // POST: /BarCode/Create
-
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return Json(null, JsonRequestBehavior.AllowGet);
-            }
-        }
+            var item = this.barCodes.Get(format, code);
+            return Json(
+                item ?? this.barCodes.Create(format, code)
+                ,JsonRequestBehavior.AllowGet);
+        }       
         
-        //
-        // POST: /BarCode/Edit/5
-
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(BarCode barCode)
         {
-            try
+            var originalCode = this.barCodes.Get(barCode.Id);
+            if(originalCode.Format == barCode.Format && originalCode.Code == barCode.Code)
             {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return Json(null, JsonRequestBehavior.AllowGet);
-            }
-        }
+                originalCode.Name = barCode.Name;
 
-        //
-        // POST: /BarCode/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
+                barCode = this.barCodes.Update(originalCode);
             }
-            catch
-            {
-                return Json(null, JsonRequestBehavior.AllowGet);
-            }
+            return Json(barCode);
         }
     }
 }
