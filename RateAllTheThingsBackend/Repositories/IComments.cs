@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using RateAllTheThingsBackend.Models;
 
 namespace RateAllTheThingsBackend.Repositories
@@ -6,5 +8,7 @@ namespace RateAllTheThingsBackend.Repositories
     {
         Comment Add(long barCodeId, Comment comment);
         void Delete(long commentId);
+
+        IEnumerable<Comment> GetCommentsForBarCode(Int64 barCodeId);
     }
 }

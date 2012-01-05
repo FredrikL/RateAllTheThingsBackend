@@ -14,8 +14,6 @@ namespace RateAllTheThingsBackend.Models
 
         public decimal Rating { get; set; }
 
-        public IEnumerable<Comment> Comments { get; set; }
-
         public DateTime CreatedAt { get; set; }
         public DateTime CreatedBy { get; set; }
     }
