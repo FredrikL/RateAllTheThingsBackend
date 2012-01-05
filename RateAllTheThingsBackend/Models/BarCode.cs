@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace RateAllTheThingsBackend.Models
 {
@@ -15,6 +14,6 @@ namespace RateAllTheThingsBackend.Models
         public decimal Rating { get; set; }
 
         public DateTime CreatedAt { get; set; }
-        public DateTime CreatedBy { get; set; }
+        public Int64 CreatedBy { get; set; }
     }
 }
