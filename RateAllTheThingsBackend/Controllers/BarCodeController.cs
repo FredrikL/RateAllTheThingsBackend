@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using RateAllTheThingsBackend.Core;
 using RateAllTheThingsBackend.Models;
 using RateAllTheThingsBackend.Repositories;
 
@@ -19,7 +20,7 @@ namespace RateAllTheThingsBackend.Controllers
             return Json(this.barCodes.All(), JsonRequestBehavior.AllowGet);
         }
 
-        // return item as array, creates new if unknown
+        [CustomBasicAuthorize]
         public ActionResult Details(string format, string code)
         {
             var item = this.barCodes.Get(format, code) ?? this.barCodes.Create(format, code);
@@ -28,6 +29,7 @@ namespace RateAllTheThingsBackend.Controllers
         }       
         
         [HttpPost]
+        [CustomBasicAuthorize]
         public ActionResult Edit(BarCode barCode)
         {
             var originalCode = this.barCodes.Get(barCode.Id);
@@ -41,6 +43,7 @@ namespace RateAllTheThingsBackend.Controllers
         }
 
         [HttpPost]
+        [CustomBasicAuthorize]
         public ActionResult Rate(Int64 id, int rating)
         {
             // Rate
