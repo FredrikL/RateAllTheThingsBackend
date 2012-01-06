@@ -18,11 +18,11 @@ namespace RateAllTheThingsBackend.Tests
         }
 
         [TestMethod]
-        public void PasswordLengthShouldBeSeventyChars()
+        public void PasswordLengthShouldBe100Chars()
         {
             PasswordGenerator gen = new PasswordGenerator();
 
-            Assert.AreEqual(70, gen.Generate().Length);
+            Assert.AreEqual(100, gen.Generate().Length);
         }
     }
 }
