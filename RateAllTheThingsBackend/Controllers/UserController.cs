@@ -24,7 +24,7 @@ namespace RateAllTheThingsBackend.Controllers
                 return Json(fromDb);
             
             var password = this.users.Create(email);
-            return Json(password);           
+            return Json(new {password = password});           
         }
 
     }

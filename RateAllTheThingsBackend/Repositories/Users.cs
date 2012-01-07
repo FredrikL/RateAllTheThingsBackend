@@ -41,8 +41,11 @@ namespace RateAllTheThingsBackend.Repositories
             using (SqlConnection connection = Connection())
             {
                 connection.Open();
-                return connection.Query<User>("SELECT * FROM Users WHERE Email = @EMAIL", new { EMAIL = email}).Single();
+                var users =  connection.Query<User>("SELECT * FROM Users WHERE Email = @EMAIL", new { EMAIL = email}).ToArray();
+                if (users.Any())
+                    return users.Single();
             }
+            return null;
         }
 
         public bool Auth(string email, string password)
