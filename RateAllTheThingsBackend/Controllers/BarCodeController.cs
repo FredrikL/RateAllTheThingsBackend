@@ -35,6 +35,7 @@ namespace RateAllTheThingsBackend.Controllers
             var originalCode = this.barCodes.Get(barCode.Id);
             if(originalCode.Format == barCode.Format && originalCode.Code == barCode.Code)
             {
+                // stuff that we allow to be updated
                 originalCode.Name = barCode.Name;
 
                 barCode = this.barCodes.Update(originalCode);

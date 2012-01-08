@@ -9,8 +9,6 @@ namespace RateAllTheThingsBackend.Models
 
         [ScriptIgnore]
         public string Email { get; set; }
-        [ScriptIgnore]
-        public string HashedPassword { get; set; }
         
         public string Alias { get; set; }
     }

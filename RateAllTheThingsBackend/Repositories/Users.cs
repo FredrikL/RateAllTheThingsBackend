@@ -41,7 +41,7 @@ namespace RateAllTheThingsBackend.Repositories
             using (SqlConnection connection = Connection())
             {
                 connection.Open();
-                var users =  connection.Query<User>("SELECT * FROM Users WHERE Email = @EMAIL", new { EMAIL = email}).ToArray();
+                var users =  connection.Query<User>("SELECT Id, Email, Alias FROM Users WHERE Email = @EMAIL", new { EMAIL = email}).ToArray();
                 if (users.Any())
                     return users.Single();
             }
@@ -55,7 +55,7 @@ namespace RateAllTheThingsBackend.Repositories
             using (SqlConnection connection = Connection())
             {
                 connection.Open();
-                return connection.Query<User>("SELECT * FROM Users WHERE Email = @EMAIL and Password = @PASSWORD", new { EMAIL = email, PASSWORD = hashedpassword }).Any();
+                return connection.Query<User>("SELECT Id FROM Users WHERE Email = @EMAIL and Password = @PASSWORD", new { EMAIL = email, PASSWORD = hashedpassword }).Any();
             }
         }
     }
