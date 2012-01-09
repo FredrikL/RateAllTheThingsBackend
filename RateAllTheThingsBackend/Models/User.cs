@@ -1,15 +1,21 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Script.Serialization;
+using Nancy.Security;
 
 namespace RateAllTheThingsBackend.Models
 {
-    public class User
+    public class User : IUserIdentity
     {
         public Int64 Id { get; set; }
 
-        [ScriptIgnore]
         public string Email { get; set; }
         
         public string Alias { get; set; }
+
+        public string UserName { get; set; }
+
+        public IEnumerable<string> Claims { get; set; }
     }
 }

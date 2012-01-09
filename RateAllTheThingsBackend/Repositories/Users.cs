@@ -2,12 +2,14 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
+using Nancy.Authentication.Basic;
+using Nancy.Security;
 using RateAllTheThingsBackend.Core;
 using RateAllTheThingsBackend.Models;
 
 namespace RateAllTheThingsBackend.Repositories
 {
-    public class Users : IUsers
+    public class Users : IUsers, IUserValidator
     {
         private readonly IHashing hashing;
         private readonly IPasswordGenerator passwordGenerator;
@@ -58,5 +60,20 @@ namespace RateAllTheThingsBackend.Repositories
                 return connection.Query<User>("SELECT Id FROM Users WHERE Email = @EMAIL and Password = @PASSWORD", new { EMAIL = email, PASSWORD = hashedpassword }).Any();
             }
         }
+
+        public IUserIdentity Validate(string username, string password)
+        {
+
+            var hashedpassword = this.hashing.Hash(password);
+
+            using (SqlConnection connection = Connection())
+            {
+                connection.Open();                
+                if(connection.Query<User>("SELECT Id FROM Users WHERE Email = @EMAIL and Password = @PASSWORD", new { EMAIL = username, PASSWORD = hashedpassword }).Any())
+                    return new User() {UserName = username};
+            }
+            return new User();
+        }
+        
     }
 }
