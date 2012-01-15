@@ -60,9 +60,15 @@ namespace RateAllTheThingsBackend.Repositories
             }
         }
 
-        public BarCode Update(BarCode originalCode)
+        public BarCode Update(BarCode barCode)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = Connection())
+            {
+                connection.Open();
+
+                connection.Execute("UPDATE BarCodes set Name = @NAME where Id = @ID", new {ID =barCode.Id, NAME = barCode.Name} );
+                return this.Get(barCode.Id);
+            }
         }
     }
 }

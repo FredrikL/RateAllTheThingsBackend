@@ -2,7 +2,7 @@ using Nancy;
 using Nancy.Authentication.Basic;
 using Nancy.Bootstrapper;
 
-namespace RateAllTheThingsBackend.Modules
+namespace RateAllTheThingsBackend.Bootstrappers
 {
     public class AuthenticationBootstrapper : DefaultNancyBootstrapper
     {

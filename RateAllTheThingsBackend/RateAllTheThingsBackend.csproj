@@ -74,7 +74,7 @@
     <Compile Include="Models\BarCode.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="Modules\AuthenticationBootstrapper.cs" />
+    <Compile Include="Bootstrappers\AuthenticationBootstrapper.cs" />
     <Compile Include="Modules\BarCodesModule.cs" />
     <Compile Include="Modules\UsersModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
