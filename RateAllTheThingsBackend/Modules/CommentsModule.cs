@@ -25,8 +25,9 @@ namespace RateAllTheThingsBackend.Modules
             Post["/{barcode_id}"] = x =>
                                         {
                                             Comment comment = this.Bind<Comment>();
-                                            var added = this.comments.Add(x.barcode_id, comment);
-                                            return Response.AsJson(new[] { added });
+                                            this.comments.Add(x.barcode_id, comment);
+                                            Comment[] commentsForBarCode = this.comments.GetCommentsForBarCode(x.barcode_id).ToArray();
+                                            return Response.AsJson(commentsForBarCode);
                                         };
         }
     }

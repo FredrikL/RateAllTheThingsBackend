@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
@@ -8,12 +7,12 @@ using RateAllTheThingsBackend.Models;
 
 namespace RateAllTheThingsBackend.Repositories
 {
-    public class BarCodes : IBarCodes
+    public class BarCodes : BaseRepo, IBarCodes
     {
         public IEnumerable<BarCode> All()
         {
             IEnumerable<BarCode> barCodes = Enumerable.Empty<BarCode>();
-            using (SqlConnection connection = Connection())
+            using (SqlConnection connection = Connection)
             {
                 connection.Open();
                 barCodes = connection.Query<BarCode>("SELECT * FROM BarCodes");   
@@ -22,14 +21,9 @@ namespace RateAllTheThingsBackend.Repositories
             return barCodes;
         }
 
-        private static SqlConnection Connection()
-        {
-            return new SqlConnection(ConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"]);
-        }
-
         public BarCode Get(long id)
         {
-            using (SqlConnection connection = Connection())
+            using (SqlConnection connection = Connection)
             {
                 connection.Open();
                 var barcode = connection.Query<BarCode>("SELECT TOP 1 * FROM BarCodes WHERE ID = @ID", new {ID = id}).Single();
@@ -39,7 +33,7 @@ namespace RateAllTheThingsBackend.Repositories
 
         public BarCode Get(string format, string code)
         {
-            using (SqlConnection connection = Connection())
+            using (SqlConnection connection = Connection)
             {
                 connection.Open();
                 var barcodes = connection.Query<BarCode>("SELECT TOP 1 * FROM BarCodes WHERE Format = @FORMAT AND Code = @CODE", new { FORMAT = format, CODE = code }).ToArray();
@@ -51,7 +45,7 @@ namespace RateAllTheThingsBackend.Repositories
 
         public BarCode Create(string format, string code)
         {
-            using (SqlConnection connection = Connection())
+            using (SqlConnection connection = Connection)
             {
                 connection.Open();
 
@@ -62,7 +56,7 @@ namespace RateAllTheThingsBackend.Repositories
 
         public BarCode Update(BarCode barCode)
         {
-            using (SqlConnection connection = Connection())
+            using (SqlConnection connection = Connection)
             {
                 connection.Open();
 

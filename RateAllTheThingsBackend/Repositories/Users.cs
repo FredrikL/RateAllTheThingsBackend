@@ -9,7 +9,7 @@ using RateAllTheThingsBackend.Models;
 
 namespace RateAllTheThingsBackend.Repositories
 {
-    public class Users : IUsers, IUserValidator
+    public class Users : BaseRepo, IUsers, IUserValidator
     {
         private readonly IHashing hashing;
         private readonly IPasswordGenerator passwordGenerator;
@@ -20,17 +20,12 @@ namespace RateAllTheThingsBackend.Repositories
             this.passwordGenerator = passwordGenerator;
         }
 
-        private static SqlConnection Connection()
-        {
-            return new SqlConnection(ConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"]);
-        }
-
         public string Create(string email)
         {
             string generatedpassword = this.passwordGenerator.Generate();
             var hashedPassword = this.hashing.Hash(generatedpassword);
 
-            using (SqlConnection connection = Connection())
+            using (SqlConnection connection = Connection)
             {
                 connection.Open();
                 connection.Execute("INSERT INTO Users(Email, Password) values(@EMAIL, @PASSWORD);", new { EMAIL = email, PASSWORD = hashedPassword });
@@ -40,7 +35,7 @@ namespace RateAllTheThingsBackend.Repositories
 
         public User Get(string email)
         {
-            using (SqlConnection connection = Connection())
+            using (SqlConnection connection = Connection)
             {
                 connection.Open();
                 var users =  connection.Query<User>("SELECT Id, Email, Alias FROM Users WHERE Email = @EMAIL", new { EMAIL = email}).ToArray();
@@ -54,7 +49,7 @@ namespace RateAllTheThingsBackend.Repositories
         {
             var hashedpassword = this.hashing.Hash(password);
 
-            using (SqlConnection connection = Connection())
+            using (SqlConnection connection = Connection)
             {
                 connection.Open();
                 return connection.Query<User>("SELECT Id FROM Users WHERE Email = @EMAIL and Password = @PASSWORD", new { EMAIL = email, PASSWORD = hashedpassword }).Any();
@@ -66,7 +61,7 @@ namespace RateAllTheThingsBackend.Repositories
 
             var hashedpassword = this.hashing.Hash(password);
 
-            using (SqlConnection connection = Connection())
+            using (SqlConnection connection = Connection)
             {
                 connection.Open();                
                 if(connection.Query<User>("SELECT Id FROM Users WHERE Email = @EMAIL and Password = @PASSWORD", new { EMAIL = username, PASSWORD = hashedpassword }).Any())
