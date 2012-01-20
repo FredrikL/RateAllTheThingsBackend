@@ -7,5 +7,6 @@ namespace RateAllTheThingsBackend.Repositories
         string Create(string email);
         User Get(string email);
         bool Auth(string email, string password);
+        long GetIdByUsername(string userName);
     }
 }

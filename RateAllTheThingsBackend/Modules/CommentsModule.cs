@@ -11,13 +11,15 @@ namespace RateAllTheThingsBackend.Modules
     {
         private readonly IBarCodes barCodes;
         private readonly IComments comments;
+        private readonly IUsers users;
 
-        public CommentsModule(IBarCodes barCodes, IComments comments) : base("/Comment")
+        public CommentsModule(IBarCodes barCodes, IComments comments, IUsers users) : base("/Comment")
         {
             this.RequiresAuthentication();
 
             this.barCodes = barCodes;
             this.comments = comments;
+            this.users = users;
 
             Get["/{barcode_id}"] = x =>
                                        {
@@ -34,6 +36,8 @@ namespace RateAllTheThingsBackend.Modules
                                                 return Response.AsJson(Enumerable.Empty<Comment>());
 
                                             Comment comment = this.Bind<Comment>();
+                                            comment.Author = this.users.GetIdByUsername(this.Context.CurrentUser.UserName);
+
                                             this.comments.Add(x.barcode_id, comment);
                                             Comment[] commentsForBarCode = this.comments.GetCommentsForBarCode(x.barcode_id).ToArray();
                                             return Response.AsJson(commentsForBarCode);
