@@ -64,5 +64,14 @@ namespace RateAllTheThingsBackend.Repositories
                 return this.Get(barCode.Id);
             }
         }
+
+        public bool Exists(long barcodeId)
+        {
+            using (SqlConnection connection = Connection)
+            {
+                connection.Open();
+                return connection.Query<BarCode>("SELECT TOP 1 * FROM BarCodes WHERE ID = @ID", new { ID = barcodeId }).Any();
+            }
+        }
     }
 }

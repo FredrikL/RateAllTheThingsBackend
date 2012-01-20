@@ -10,5 +10,6 @@ namespace RateAllTheThingsBackend.Repositories
         BarCode Get(string format, string code);
         BarCode Create(string format, string code);
         BarCode Update(BarCode barCode);
+        bool Exists(long barcodeId);
     }
 }
