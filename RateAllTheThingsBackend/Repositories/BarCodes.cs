@@ -43,7 +43,7 @@ namespace RateAllTheThingsBackend.Repositories
             }
         }
 
-        public BarCode Create(string format, string code)
+        public BarCode Create(string format, string code, long createdBy)
         {
             using (SqlConnection connection = Connection)
             {
@@ -54,7 +54,7 @@ namespace RateAllTheThingsBackend.Repositories
             }
         }
 
-        public BarCode Update(BarCode barCode)
+        public BarCode Update(BarCode barCode, long updatedBy)
         {
             using (SqlConnection connection = Connection)
             {

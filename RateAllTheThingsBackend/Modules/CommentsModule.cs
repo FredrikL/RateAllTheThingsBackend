@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Nancy;
 using Nancy.ModelBinding;
@@ -13,33 +14,38 @@ namespace RateAllTheThingsBackend.Modules
         private readonly IComments comments;
         private readonly IUsers users;
 
-        public CommentsModule(IBarCodes barCodes, IComments comments, IUsers users) : base("/Comment")
+        public CommentsModule(IBarCodes barCodes, IComments a, IUsers users) : base("/Comment")
         {
             this.RequiresAuthentication();
 
             this.barCodes = barCodes;
-            this.comments = comments;
+            this.comments = a;
             this.users = users;
 
-            Get["/{barcode_id}"] = x =>
+            Get["/"] = x =>
+                           {
+                               throw new NotImplementedException();
+                           };
+
+            Get["/{id}"] = x =>
                                        {
-                                           if (!this.barCodes.Exists(x.barcode_id))
+                                           if (!this.barCodes.Exists(x.id))
                                                return Response.AsJson(Enumerable.Empty<Comment>());
                                            
-                                           Comment[] commentsForBarCode = this.comments.GetCommentsForBarCode(x.barcode_id).ToArray();
+                                           Comment[] commentsForBarCode = this.comments.GetCommentsForBarCode(x.id).ToArray();
                                            return Response.AsJson(commentsForBarCode);
                                        };
 
-            Post["/{barcode_id}"] = x =>
+            Post["/{id}"] = x =>
                                         {
-                                            if (!this.barCodes.Exists(x.barcode_id))
+                                            if (!this.barCodes.Exists(x.id))
                                                 return Response.AsJson(Enumerable.Empty<Comment>());
 
                                             Comment comment = this.Bind<Comment>();
                                             comment.Author = this.users.GetIdByUsername(this.Context.CurrentUser.UserName);
 
-                                            this.comments.Add(x.barcode_id, comment);
-                                            Comment[] commentsForBarCode = this.comments.GetCommentsForBarCode(x.barcode_id).ToArray();
+                                            this.comments.Add(comment);
+                                            Comment[] commentsForBarCode = this.comments.GetCommentsForBarCode(x.id).ToArray();
                                             return Response.AsJson(commentsForBarCode);
                                         };
         }

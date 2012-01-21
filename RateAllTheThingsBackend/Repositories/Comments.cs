@@ -8,11 +8,18 @@ namespace RateAllTheThingsBackend.Repositories
 {
     public class Comments : BaseRepo, IComments
     {
-        public void Add(long barCodeId, Comment comment)
-        {
+        public void Add(Comment comment)
+        {                        
             using(SqlConnection conn = Connection)
             {
-                conn.Execute("insert into Comments(Text) values(@TEXT); select scope_identity();", new {TEXT = comment.Text});
+                conn.Open();
+                conn.Execute("insert into Comments(Text, Author, BarCodeId) values(@TEXT, @AUTHOR, @BARCODEID)",
+                    new
+                        {
+                            TEXT = comment.Text, 
+                            AUTHOR = comment.Author, 
+                            BARCODEID =comment.BarCodeId
+                        });
             }
         }
 
@@ -21,10 +28,11 @@ namespace RateAllTheThingsBackend.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Comment> GetCommentsForBarCode(long barCodeId)
+        public IEnumerable<Comment> GetCommentsForBarCode(Int64 barCodeId)
         {
             using(SqlConnection conn = Connection)
             {
+                conn.Open();
                 return conn.Query<Comment>("SELECT * FROM Comments");
             }
         }
