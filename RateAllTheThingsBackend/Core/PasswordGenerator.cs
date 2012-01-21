@@ -1,4 +1,4 @@
-using System.Linq;
+using System;
 using System.Security.Cryptography;
 
 namespace RateAllTheThingsBackend.Core
@@ -10,7 +10,8 @@ namespace RateAllTheThingsBackend.Core
             byte[] pw = new byte[50];
             var random = new RNGCryptoServiceProvider();
             random.GetBytes(pw);
-            return string.Concat(pw.Select(b => b.ToString("X2")).ToArray());
+            return Convert.ToBase64String(pw);
+            //return string.Concat(pw.Select(b => b.ToString("X2")).ToArray());
         }
     }
 }
