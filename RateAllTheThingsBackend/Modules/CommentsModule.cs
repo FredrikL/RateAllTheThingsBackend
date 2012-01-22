@@ -14,18 +14,13 @@ namespace RateAllTheThingsBackend.Modules
         private readonly IComments comments;
         private readonly IUsers users;
 
-        public CommentsModule(IBarCodes barCodes, IComments a, IUsers users) : base("/Comment")
+        public CommentsModule(IBarCodes barCodes, IComments comments, IUsers users) : base("/Comment")
         {
             this.RequiresAuthentication();
 
             this.barCodes = barCodes;
-            this.comments = a;
+            this.comments = comments;
             this.users = users;
-
-            Get["/"] = x =>
-                           {
-                               throw new NotImplementedException();
-                           };
 
             Get["/{id}"] = x =>
                                        {
