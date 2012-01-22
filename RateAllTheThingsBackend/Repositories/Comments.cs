@@ -33,7 +33,7 @@ namespace RateAllTheThingsBackend.Repositories
             using(SqlConnection conn = Connection)
             {
                 conn.Open();
-                return conn.Query<Comment>("SELECT * FROM Comments");
+                return conn.Query<Comment>("SELECT * FROM Comments WHERE BarCodeId = @BARCODEID", new {BARCODEID = barCodeId});
             }
         }
     }
