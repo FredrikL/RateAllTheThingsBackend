@@ -121,7 +121,7 @@ namespace RateAllTheThingsBackend.Repositories
                                                      {
                                                          BARCODEID = barCodeId,
                                                          AUTHOR = userid
-                                                     }).Any();
+                                                     }).Single() > 0;
             }
         }
     }
