@@ -16,13 +16,5 @@ namespace RateAllTheThingsBackend.Tests
             Debug.WriteLine(generate);
             Assert.AreNotEqual(generate, string.Empty);
         }
-
-        [TestMethod]
-        public void PasswordLengthShouldBe100Chars()
-        {
-            PasswordGenerator gen = new PasswordGenerator();
-
-            Assert.AreEqual(100, gen.Generate().Length);
-        }
     }
 }
