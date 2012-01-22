@@ -7,8 +7,8 @@ namespace RateAllTheThingsBackend.Repositories
     public interface IBarCodes
     {
         IEnumerable<BarCode> All();
-        BarCode Get(Int64 id);
-        BarCode Get(string format, string code);
+        BarCode Get(Int64 id, Int64 userId);
+        BarCode Get(string format, string code, Int64 userId);
         BarCode Create(string format, string code, Int64 createdBy);
         BarCode Update(BarCode barCode, Int64 updatedBy);
         bool Exists(long barcodeId);

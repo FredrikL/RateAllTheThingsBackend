@@ -13,6 +13,7 @@ namespace RateAllTheThingsBackend.Models
         public string Creator { get; set; }
 
         public decimal Rating { get; set; }
+        public bool HasRated { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public Int64 CreatedBy { get; set; }

@@ -21,22 +21,44 @@ namespace RateAllTheThingsBackend.Repositories
             return barCodes;
         }
 
-        public BarCode Get(long id)
+        public BarCode Get(long id, Int64 userId)
         {
             using (SqlConnection connection = Connection)
             {
                 connection.Open();
-                var barcode = connection.Query<BarCode>("SELECT TOP 1 * FROM BarCodes WHERE ID = @ID", new {ID = id}).Single();
+                
+                var barcode = connection.Query<BarCode>("SELECT B.*, " +
+                                                        "ISNULL((SELECT CONVERT(DECIMAL(30,2),SUM(Rating))/COUNT(Rating) FROM Rating WHERE BarCodeID = B.ID),0) AS Rating, " +
+                                                        "CONVERT(BIT,(SELECT COUNT(Rating) FROM Rating WHERE BarCodeID = B.ID aND Author = @AUTHOR)) AS HasRated " +
+                                                        "FROM BarCodes B " +
+                                                        "WHERE B.Id = @ID",
+                                                        new
+                                                            {
+                                                                ID = id,
+                                                                AUTHOR = userId
+                                                            }).Single();
+
                 return barcode;
             }
         }
 
-        public BarCode Get(string format, string code)
+        public BarCode Get(string format, string code, Int64 userId)
         {
             using (SqlConnection connection = Connection)
             {
                 connection.Open();
-                var barcodes = connection.Query<BarCode>("SELECT TOP 1 * FROM BarCodes WHERE Format = @FORMAT AND Code = @CODE", new { FORMAT = format, CODE = code }).ToArray();
+                //var barcodes = connection.Query<BarCode>("SELECT TOP 1 * FROM BarCodes WHERE Format = @FORMAT AND Code = @CODE", new { FORMAT = format, CODE = code }).ToArray();
+                var barcodes = connection.Query<BarCode>("SELECT B.*, " +
+                                                        "ISNULL((SELECT CONVERT(DECIMAL(30,2),SUM(Rating))/COUNT(Rating) FROM Rating WHERE BarCodeID = B.ID),0) AS Rating, " +
+                                                        "CONVERT(BIT,(SELECT COUNT(Rating) FROM Rating WHERE BarCodeID = B.ID aND Author = @AUTHOR)) AS HasRated " +
+                                                        "FROM BarCodes B " +
+                                                        "WHERE Format = @FORMAT AND Code = @CODE",
+                                                        new
+                                                        {
+                                                            FORMAT = format,
+                                                            CODE = code,
+                                                            AUTHOR = userId
+                                                        }).ToArray();
                 if (barcodes.Any())
                     return barcodes.First();
                 return null;
@@ -50,7 +72,7 @@ namespace RateAllTheThingsBackend.Repositories
                 connection.Open();
 
                 var id = connection.Query<decimal>("INSERT INTO BarCodes(Format, Code) values(@FORMAT, @CODE); SELECT SCOPE_IDENTITY();", new { FORMAT = format, CODE = code }).Single();
-                return this.Get((Int64)id);
+                return this.Get((Int64)id, createdBy);
             }
         }
 
@@ -61,7 +83,7 @@ namespace RateAllTheThingsBackend.Repositories
                 connection.Open();
 
                 connection.Execute("UPDATE BarCodes set Name = @NAME where Id = @ID", new {ID =barCode.Id, NAME = barCode.Name} );
-                return this.Get(barCode.Id);
+                return this.Get(barCode.Id, updatedBy);
             }
         }
 
