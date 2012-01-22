@@ -7,7 +7,7 @@ namespace RateAllTheThingsBackend.Repositories
     public interface IComments
     {
         void Add(Comment comment);
-        void Delete(long commentId);
+        void Delete(Int64 commentId);
 
         IEnumerable<Comment> GetCommentsForBarCode(Int64 barCodeId);
     }

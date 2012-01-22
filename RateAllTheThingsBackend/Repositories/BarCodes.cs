@@ -73,5 +73,34 @@ namespace RateAllTheThingsBackend.Repositories
                 return connection.Query<BarCode>("SELECT TOP 1 * FROM BarCodes WHERE ID = @ID", new { ID = barcodeId }).Any();
             }
         }
+
+        public void Rate(long barCodeId, byte rating, long userid)
+        {
+            using (SqlConnection connection = Connection)
+            {
+                connection.Open();
+                connection.Execute("INSERT INTO Rating(BarCodeID, Author, Rating) VALUES(@BARCODEID, @AUTHOR, @RATING)",
+                                   new
+                                       {
+                                           BARCODEID = barCodeId,
+                                           AUTHOR = userid,
+                                           RATING = rating
+                                       });
+            }            
+        }
+
+        public bool HasRated(long userid, long barCodeId)
+        {
+            using (SqlConnection connection = Connection)
+            {
+                connection.Open();
+                return connection.Query<int>("SELECT Count(Rating) FROM Rating WHERE BarCodeId = @BARCODEID AND Author = @AUTHOR",
+                                                 new
+                                                     {
+                                                         BARCODEID = barCodeId,
+                                                         AUTHOR = userid
+                                                     }).Any();
+            }
+        }
     }
 }

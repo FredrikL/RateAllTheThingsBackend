@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RateAllTheThingsBackend.Models;
 
@@ -6,10 +7,12 @@ namespace RateAllTheThingsBackend.Repositories
     public interface IBarCodes
     {
         IEnumerable<BarCode> All();
-        BarCode Get(long id);
+        BarCode Get(Int64 id);
         BarCode Get(string format, string code);
-        BarCode Create(string format, string code, long createdBy);
-        BarCode Update(BarCode barCode, long updatedBy);
+        BarCode Create(string format, string code, Int64 createdBy);
+        BarCode Update(BarCode barCode, Int64 updatedBy);
         bool Exists(long barcodeId);
+        void Rate(Int64 barCodeId, byte rating, Int64 userid);
+        bool HasRated(Int64 userid, Int64 barCodeId);
     }
 }

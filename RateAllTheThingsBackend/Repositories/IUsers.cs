@@ -1,3 +1,4 @@
+using System;
 using RateAllTheThingsBackend.Models;
 
 namespace RateAllTheThingsBackend.Repositories
@@ -7,6 +8,6 @@ namespace RateAllTheThingsBackend.Repositories
         string Create(string email);
         User Get(string email);
         bool Auth(string email, string password);
-        long GetIdByUsername(string userName);
+        Int64 GetIdByUsername(string userName);
     }
 }
