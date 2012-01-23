@@ -1,0 +1,30 @@
+/* lol? */
+
+.content{
+	margin: 20px auto;
+	width: 960px;
+	font: 16px Helvetica, Sans-Serif;
+}
+
+.text{
+	width: 586px;
+	float:left;
+}
+.image {
+	float:left;
+	clear:right;
+	margin-right:10px;
+	width: 364px;
+}
+.footer{
+	font-size: 10px;
+}
+h2 { 
+	font-size: 20px; 
+}
+a,
+a:hover,
+a:visited{
+	color: #4096EE;
+	text-decoration: none;
+}
