@@ -90,6 +90,7 @@
     <Compile Include="Repositories\Users.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\ratt.css" />
     <Content Include="Content\ratt.png" />
     <Content Include="Views\index.html" />
     <Content Include="Web.config">
