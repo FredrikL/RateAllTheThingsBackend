@@ -11,7 +11,6 @@ namespace RateAllTheThingsBackend.Core
             var random = new RNGCryptoServiceProvider();
             random.GetBytes(pw);
             return Convert.ToBase64String(pw);
-            //return string.Concat(pw.Select(b => b.ToString("X2")).ToArray());
         }
     }
 }

@@ -15,6 +15,7 @@ namespace RateAllTheThingsBackend.Modules
             Post["/"] = x =>
                             {
                                 var email = Request.Query.email.ToString();
+                                
                                 if (!string.IsNullOrEmpty(email))
                                 {
                                     var fromDb = this.users.Get(email);
