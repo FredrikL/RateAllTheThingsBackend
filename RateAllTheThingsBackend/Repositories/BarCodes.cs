@@ -71,7 +71,8 @@ namespace RateAllTheThingsBackend.Repositories
             {
                 connection.Open();
 
-                var id = connection.Query<decimal>("INSERT INTO BarCodes(Format, Code) values(@FORMAT, @CODE); SELECT SCOPE_IDENTITY();", new { FORMAT = format, CODE = code }).Single();
+                var id = connection.Query<decimal>("INSERT INTO BarCodes(Format, Code, CreatedBy) values(@FORMAT, @CODE, @CREATEDBY); SELECT SCOPE_IDENTITY();",
+                    new { FORMAT = format, CODE = code, CREATEDBY = createdBy }).Single();
                 return this.Get((Int64)id, createdBy);
             }
         }
