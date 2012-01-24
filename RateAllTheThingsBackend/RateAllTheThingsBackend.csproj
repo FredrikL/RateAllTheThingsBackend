@@ -83,13 +83,17 @@
     <Compile Include="Repositories\BarCodes.cs" />
     <Compile Include="Repositories\BaseRepo.cs" />
     <Compile Include="Repositories\Comments.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Repositories\EventLog.cs" />
     <Compile Include="Repositories\IBarCodes.cs" />
     <Compile Include="Repositories\IComments.cs" />
     <Compile Include="Core\IHashing.cs" />
+    <Compile Include="Repositories\IEventLog.cs" />
     <Compile Include="Repositories\IUsers.cs" />
     <Compile Include="Repositories\Users.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\qr.png" />
     <Content Include="Content\ratt.css" />
     <Content Include="Content\ratt.png" />
     <Content Include="Views\index.html" />

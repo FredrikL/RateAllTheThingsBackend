@@ -13,14 +13,17 @@ namespace RateAllTheThingsBackend.Modules
         private readonly IBarCodes barCodes;
         private readonly IComments comments;
         private readonly IUsers users;
+        private readonly IEventLog eventLog;
 
-        public CommentsModule(IBarCodes barCodes, IComments comments, IUsers users) : base("/Comment")
+        public CommentsModule(IBarCodes barCodes, IComments comments, 
+            IUsers users, IEventLog eventLog) : base("/Comment")
         {
             this.RequiresAuthentication();
 
             this.barCodes = barCodes;
             this.comments = comments;
             this.users = users;
+            this.eventLog = eventLog;
 
             Get["/{id}"] = x =>
                                        {
@@ -41,8 +44,21 @@ namespace RateAllTheThingsBackend.Modules
 
                                             this.comments.Add(comment);
                                             Comment[] commentsForBarCode = this.comments.GetCommentsForBarCode(x.id).ToArray();
+                                            this.Log(x.id, comment.Author, "COMMENT", comment.Text);
                                             return Response.AsJson(commentsForBarCode);
                                         };
+        }
+
+        private void Log(Int64 barCodeId, long userId, string eventName, string data = null)
+        {
+            this.eventLog.LogEvent(new Event()
+            {
+                AuthorId = userId,
+                BarCodeId = barCodeId,
+                Ip = this.Context.Request.UserHostAddress,
+                EventName = eventName,
+                Data = null
+            });
         }
     }
 }
