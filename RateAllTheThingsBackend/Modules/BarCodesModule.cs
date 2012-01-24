@@ -33,11 +33,15 @@ namespace RateAllTheThingsBackend.Modules
             Get["/{format}/{code}"] = x =>
                                           {                                              
                                               var userId = this.users.GetIdByUsername(this.Context.CurrentUser.UserName);
-                                              BarCode barcode = this.barCodes.Get(x.format, x.code, userId) ?? this.barCodes.Create(x.format, x.code, userId);
+                                              if (x.format != null && x.code != null)
+                                              {
+                                                  BarCode barcode = this.barCodes.Get(x.format, x.code, userId) ?? this.barCodes.Create(x.format, x.code, userId);
 
-                                              this.Log(barcode, userId, "GET");
+                                                  this.Log(barcode, userId, "GET");
 
-                                              return Response.AsJson(new[] {barcode});
+                                                  return Response.AsJson(new[] {barcode});
+                                              }
+                                              return Response.AsJson(Enumerable.Empty<BarCode>());
                                           };
             Post["/"] = x =>
                             {

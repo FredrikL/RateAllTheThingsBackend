@@ -3,7 +3,7 @@
 <head>
     <title>Rate All The Things</title>
     <!--<link rel="icon" href="/favicon.ico" type="image/x-icon" />-->
-    <link rel="stylesheet" href="@Path['~/Content/ratt.css'];" type="text/css" />
+    <link rel="stylesheet" href='@Url.Content("~/content/ratt.css")' type="text/css" />
     
     <script type="text/javascript">
 
@@ -39,7 +39,7 @@
             </p>
             <p>
                 Coming soon to Android
-            </p>
+            </p>                
             <p>
                 Signup to be notifed when the app is available on Android Market.
                 <form action="/signup" method="POST">
@@ -50,14 +50,14 @@
                 </form>
             </p>
             
-            <img src="@Path['~/Content/qr.png'];" class="qr"/>
+            <img src='@Url.Content("~/content/qr.png")' class="qr"/>
             
         </div>
         <div class="image">
-            <img src="@Path['~/Content/ratt.png'];" />
+            <img src='@Url.Content("~/content/ratt.png")' />
         </div>
         <div class="footer">
-            Built by <a href="http://twitter.com/fleijon">@fleijon</a>
+            Built by <a href="http://twitter.com/fleijon">@@fleijon</a><br />
             <a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://rateallthethings.com"></a>
 <noscript><a href="http://flattr.com/thing/470363/Rate-All-The-Things" target="_blank">
 <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a></noscript>

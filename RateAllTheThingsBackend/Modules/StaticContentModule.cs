@@ -8,7 +8,7 @@ namespace RateAllTheThingsBackend.Modules
         {
             Get["/"] = x =>
                            {
-                               return View["index"];
+                               return View["index.cshtml"];
                            };
         }
     }
