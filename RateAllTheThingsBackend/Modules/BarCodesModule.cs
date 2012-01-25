@@ -84,7 +84,7 @@ namespace RateAllTheThingsBackend.Modules
                                        {
                                            AuthorId = userId,
                                            BarCodeId = barcode.Id,
-                                           Ip = this.Context.Request.UserHostAddress,
+                                           Ip = this.Context.Request.Headers["HTTP_X_FORWARDED_FOR"].FirstOrDefault(),
                                            EventName = eventName,
                                            Data = null
                                        });
