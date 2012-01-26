@@ -9,5 +9,6 @@ namespace RateAllTheThingsBackend.Repositories
         User Get(string email);
         bool Auth(string email, string password);
         Int64 GetIdByUsername(string userName);
+        string GetUserEmail(Int64 userId);
     }
 }
