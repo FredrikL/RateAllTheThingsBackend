@@ -52,11 +52,12 @@ namespace RateAllTheThingsBackend.Modules
                                 {
                                     // stuff that we allow to be updated
                                     originalCode.Name = barCode.Name;
-                                    barCode = this.barCodes.Update(originalCode, userId);
+                                    originalCode.Manufacturer = barCode.Manufacturer;
+                                    this.barCodes.Update(originalCode, userId);
 
                                     this.Log(originalCode, userId, "UPDATE", barCode.Name);
                                 }
-                                return Response.AsJson(new[] {barCode});
+                                return Response.AsJson(new[] { originalCode });
                             };
 
             Post["/Rate/{id}/{value}"] = x =>

@@ -93,10 +93,12 @@
     <Compile Include="Repositories\Comments.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Repositories\EventLog.cs" />
+    <Compile Include="Repositories\GravatarService.cs" />
     <Compile Include="Repositories\IBarCodes.cs" />
     <Compile Include="Repositories\IComments.cs" />
     <Compile Include="Core\IHashing.cs" />
     <Compile Include="Repositories\IEventLog.cs" />
+    <Compile Include="Repositories\IGravatarService.cs" />
     <Compile Include="Repositories\ISignup.cs" />
     <Compile Include="Repositories\IUsers.cs" />
     <Compile Include="Repositories\Users.cs" />
@@ -104,7 +106,6 @@
   <ItemGroup>
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\ratt.css" />
-    <Content Include="Content\ratt.png" />
     <Content Include="Views\index.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

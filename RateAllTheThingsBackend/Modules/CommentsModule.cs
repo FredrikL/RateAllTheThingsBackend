@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using Nancy.ModelBinding;
@@ -14,9 +15,10 @@ namespace RateAllTheThingsBackend.Modules
         private readonly IComments comments;
         private readonly IUsers users;
         private readonly IEventLog eventLog;
+        private readonly IGravatarService gravatarService;
 
         public CommentsModule(IBarCodes barCodes, IComments comments, 
-            IUsers users, IEventLog eventLog) : base("/Comment")
+            IUsers users, IEventLog eventLog, IGravatarService gravatarService) : base("/Comment")
         {
             this.RequiresAuthentication();
 
@@ -24,14 +26,16 @@ namespace RateAllTheThingsBackend.Modules
             this.comments = comments;
             this.users = users;
             this.eventLog = eventLog;
+            this.gravatarService = gravatarService;
 
             Get["/{id}"] = x =>
                                        {
                                            if (!this.barCodes.Exists(x.id))
                                                return Response.AsJson(Enumerable.Empty<Comment>());
                                            
-                                           Comment[] commentsForBarCode = this.comments.GetCommentsForBarCode(x.id).ToArray();
-                                           return Response.AsJson(commentsForBarCode);
+                                           IEnumerable<Comment> commentsForBarCode = this.comments.GetCommentsForBarCode(x.id);
+                                           Comment[] ret = this.gravatarService.AddAvatarToComments(commentsForBarCode).ToArray();
+                                           return Response.AsJson(ret);
                                        };
 
             Post["/{id}"] = x =>

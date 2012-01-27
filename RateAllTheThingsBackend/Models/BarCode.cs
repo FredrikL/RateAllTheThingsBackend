@@ -10,7 +10,7 @@ namespace RateAllTheThingsBackend.Models
         public string Code { get; set; }
 
         public string Name { get; set; }
-        public string Creator { get; set; }
+        public string Manufacturer { get; set; }
 
         public decimal Rating { get; set; }
         public bool HasRated { get; set; }

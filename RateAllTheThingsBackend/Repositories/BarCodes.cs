@@ -77,14 +77,13 @@ namespace RateAllTheThingsBackend.Repositories
             }
         }
 
-        public BarCode Update(BarCode barCode, long updatedBy)
+        public void Update(BarCode barCode, long updatedBy)
         {
             using (SqlConnection connection = Connection)
             {
                 connection.Open();
 
-                connection.Execute("UPDATE BarCodes set Name = @NAME where Id = @ID", new {ID =barCode.Id, NAME = barCode.Name} );
-                return this.Get(barCode.Id, updatedBy);
+                connection.Execute("UPDATE BarCodes set Name = @NAME, Manufacturer = @MANUF where Id = @ID", new { ID = barCode.Id, NAME = barCode.Name, MANUF = barCode.Manufacturer });
             }
         }
 

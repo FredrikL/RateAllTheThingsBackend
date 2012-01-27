@@ -65,6 +65,15 @@ namespace RateAllTheThingsBackend.Repositories
             }
         }
 
+        public string GetUserEmail(long userId)
+        {
+            using (SqlConnection connection = Connection)
+            {
+                connection.Open();
+                return connection.Query<string>("SELECT email FROM Users WHERE Id = @ID", new { ID = userId }).Single();
+            }
+        }
+
         public IUserIdentity Validate(string username, string password)
         {
 
