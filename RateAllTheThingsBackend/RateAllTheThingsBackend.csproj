@@ -102,8 +102,7 @@
     <Compile Include="Repositories\Users.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="favicon.ico" />
-    <Content Include="Content\qr.png" />
+    <Content Include="Content\favicon.ico" />
     <Content Include="Content\ratt.css" />
     <Content Include="Content\ratt.png" />
     <Content Include="Views\index.html" />
