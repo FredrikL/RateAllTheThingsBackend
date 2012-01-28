@@ -72,7 +72,7 @@ namespace RateAllTheThingsBackend.Modules
                                                  if (!this.barCodes.HasRated(userId, x.id))
                                                  {
                                                      this.barCodes.Rate(x.id, (byte) x.value, userId);
-                                                     this.Log(x.id, userId, "RATE", x.value.toString());
+                                                     this.Log(x.id, userId, "RATE");
                                                  }
 
                                                  return Response.AsJson(new[] {this.barCodes.Get(x.id, userId)});
@@ -81,14 +81,19 @@ namespace RateAllTheThingsBackend.Modules
 
         private void Log(BarCode barcode, long userId, string eventName,string data = null)
         {
+            this.Log(barcode.Id, userId, eventName, data);
+        }
+
+        private void Log(long barcodeId, long userId, string eventName,string data = null)
+        {
             this.eventLog.LogEvent(new Event()
-                                       {
-                                           AuthorId = userId,
-                                           BarCodeId = barcode.Id,
-                                           Ip = this.Request.Headers["X-Forwarded-For"].FirstOrDefault(),
-                                           EventName = eventName,
-                                           Data = null
-                                       });
+            {
+                AuthorId = userId,
+                BarCodeId = barcodeId,
+                Ip = this.Request.Headers["X-Forwarded-For"].FirstOrDefault(),
+                EventName = eventName,
+                Data = null
+            });
         }
     }
 }
