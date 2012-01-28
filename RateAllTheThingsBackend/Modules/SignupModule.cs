@@ -21,7 +21,10 @@ namespace RateAllTheThingsBackend.Modules
                                     this.signup.AddSignup(email);
                                     return Response.AsRedirect("/?signup=true");
                                 }
-                                catch(Exception){}
+                                catch(Exception e)
+                                {
+                                    
+                                }
 
                                 return Response.AsRedirect("/");
                             };
