@@ -74,6 +74,15 @@ namespace RateAllTheThingsBackend.Repositories
             }
         }
 
+        public void ChangePassword(long id, string hashedPassword)
+        {
+            using(SqlConnection connection = Connection)
+            {
+                connection.Open();
+                connection.Execute("UPDATE Users set Password = @Password where Id = @Id", new {Password = hashedPassword, Id = id});
+            }
+        }
+
         public IUserIdentity Validate(string username, string password)
         {
 

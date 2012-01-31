@@ -10,5 +10,6 @@ namespace RateAllTheThingsBackend.Repositories
         bool Auth(string email, string password);
         Int64 GetIdByUsername(string userName);
         string GetUserEmail(Int64 userId);
+        void ChangePassword(Int64 id, string hashedPassword);
     }
 }

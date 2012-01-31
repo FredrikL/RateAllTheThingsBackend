@@ -29,28 +29,29 @@ namespace RateAllTheThingsBackend.Modules
             this.gravatarService = gravatarService;
 
             Get["/{id}"] = x =>
-                                       {
-                                           if (!this.barCodes.Exists(x.id))
-                                               return Response.AsJson(Enumerable.Empty<Comment>());
-                                           
-                                           IEnumerable<Comment> commentsForBarCode = this.comments.GetCommentsForBarCode(x.id);
-                                           Comment[] ret = this.gravatarService.AddAvatarToComments(commentsForBarCode).ToArray();
-                                           return Response.AsJson(ret);
-                                       };
+                               {
+                                   if (!this.barCodes.Exists(x.id))
+                                       return Response.AsJson(Enumerable.Empty<Comment>());
+
+                                   IEnumerable<Comment> commentsForBarCode = this.comments.GetCommentsForBarCode(x.id);
+                                   Comment[] ret =
+                                       this.gravatarService.AddAvatarToComments(commentsForBarCode).ToArray();
+                                   return Response.AsJson(ret);
+                               };
 
             Post["/{id}"] = x =>
-                                        {
-                                            if (!this.barCodes.Exists(x.id))
-                                                return Response.AsJson(Enumerable.Empty<Comment>());
+                                {
+                                    if (!this.barCodes.Exists(x.id))
+                                        return Response.AsJson(Enumerable.Empty<Comment>());
 
-                                            Comment comment = this.Bind<Comment>();
-                                            comment.Author = this.users.GetIdByUsername(this.Context.CurrentUser.UserName);
+                                    Comment comment = this.Bind<Comment>();
+                                    comment.Author = this.users.GetIdByUsername(this.Context.CurrentUser.UserName);
 
-                                            this.comments.Add(comment);
-                                            Comment[] commentsForBarCode = this.comments.GetCommentsForBarCode(x.id).ToArray();
-                                            this.Log(x.id, comment.Author, "COMMENT", comment.Text);
-                                            return Response.AsJson(commentsForBarCode);
-                                        };
+                                    this.comments.Add(comment);
+                                    Comment[] commentsForBarCode = this.comments.GetCommentsForBarCode(x.id).ToArray();
+                                    this.Log(x.id, comment.Author, "COMMENT", comment.Text);
+                                    return Response.AsJson(commentsForBarCode);
+                                };
         }
 
         private void Log(Int64 barCodeId, long userId, string eventName, string data = null)
