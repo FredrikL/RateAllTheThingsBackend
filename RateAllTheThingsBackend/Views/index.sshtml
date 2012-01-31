@@ -49,12 +49,12 @@
                     <input type="submit" value="Signup"/>
                 </form>
             </p>
-            
         </div>
         <div class="image">
             <img src='@Path['~/Content/ratt.png'];' />
         </div>
         <div class="footer">
+            <a href="/User/PasswordReset">Reset password</a> | 
             Built by <a href="http://twitter.com/fleijon">@fleijon</a><br />
             <a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://rateallthethings.com"></a>
 <noscript><a href="http://flattr.com/thing/470363/Rate-All-The-Things" target="_blank">

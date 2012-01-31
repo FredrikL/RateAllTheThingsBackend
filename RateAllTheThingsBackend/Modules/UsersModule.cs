@@ -2,6 +2,7 @@ using System.Linq;
 using Nancy;
 using Nancy.ModelBinding;
 using RateAllTheThingsBackend.Core;
+using RateAllTheThingsBackend.Models;
 using RateAllTheThingsBackend.Repositories;
 
 namespace RateAllTheThingsBackend.Modules
@@ -12,14 +13,16 @@ namespace RateAllTheThingsBackend.Modules
         private readonly IPasswordGenerator passwordGenerator;
         private readonly IHashing hashing;
         private readonly IEmailGateway emailGateway;
+        private readonly IEventLog eventLog;
 
         public UsersModule(IUsers users, IPasswordGenerator passwordGenerator,
-            IHashing hashing, IEmailGateway emailGateway) : base("/User")
+            IHashing hashing, IEmailGateway emailGateway, IEventLog eventLog) : base("/User")
         {
             this.users = users;
             this.passwordGenerator = passwordGenerator;
             this.hashing = hashing;
             this.emailGateway = emailGateway;
+            this.eventLog = eventLog;
 
             Post["/"] = x =>
                             {
@@ -39,7 +42,7 @@ namespace RateAllTheThingsBackend.Modules
 
             Get["/PasswordReset"] = x =>
                                         {
-                                            return View["passwordreset"];
+                                            return View["passwordreset", new Result  { Success = false }];
                                         };
 
             Post["/PasswordReset"] = x =>
@@ -56,18 +59,24 @@ namespace RateAllTheThingsBackend.Modules
                                                      this.users.ChangePassword(user.Id, hashedPassword);
                                                      this.emailGateway.SendNewPasswordEmail(user.Email, password);
                                                      result = true;
+
+                                                     this.eventLog.LogEvent(new Event()
+                                                                                {
+                                                                                    AuthorId = user.Id,
+                                                                                    BarCodeId = null,
+                                                                                    EventName = "CHANGEPASSWORD",
+                                                                                    Ip = this.Request.Headers["X-Forwarded-For"].FirstOrDefault()
+                                                                                });
                                                  }
                                              }
 
-                                             //TODO: Log ?
+                                             return View["passwordreset", new Result { Success = result }];
+                                         };            
+        }
 
-                                             return View["passwordreset", new {Success = result}];
-                                         };
-            Get["/TrollLol"] = x =>
-                                   {
-                                       this.emailGateway.SendNewPasswordEmail("fredrik.leijon@gmail.com", "troll lol");
-                                       return Response.AsJson(Enumerable.Empty<int>());
-                                   };
+        public class Result
+        {
+            public bool Success { get; set; }
         }
 
         class PasswordResetBody

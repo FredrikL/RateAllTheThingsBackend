@@ -1,3 +1,4 @@
+using System;
 using System.Net.Mail;
 
 namespace RateAllTheThingsBackend.Core
@@ -8,7 +9,8 @@ namespace RateAllTheThingsBackend.Core
         {
             using (var client = new SmtpClient())
             {
-                client.Send("noreply@rateallthethings.com", email, "Password reset", password);
+                string message = "Hello " + alias + Environment.NewLine + "Your new password is: " + password + Environment.NewLine + Environment.NewLine + "/http://rateallthethings.com";
+                client.Send("noreply@rateallthethings.com", email, "Password reset", message);
             }
         }
     }
