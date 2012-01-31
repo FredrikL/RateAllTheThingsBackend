@@ -102,8 +102,12 @@
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\ratt.css" />
     <Content Include="Content\ratt.png" />
-    <None Include="Views\index.sshtml" />
-    <None Include="Views\passwordreset.sshtml" />
+    <None Include="Views\index.sshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Views\passwordreset.sshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
