@@ -63,6 +63,11 @@ namespace RateAllTheThingsBackend.Modules
 
                                              return View["passwordreset", new {Success = result}];
                                          };
+            Get["/TrollLol"] = x =>
+                                   {
+                                       this.emailGateway.SendNewPasswordEmail("fredrik.leijon@gmail.com", "troll lol");
+                                       return Response.AsJson(Enumerable.Empty<int>());
+                                   };
         }
 
         class PasswordResetBody

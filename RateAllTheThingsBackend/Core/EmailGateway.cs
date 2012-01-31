@@ -1,11 +1,15 @@
+using System.Net.Mail;
+
 namespace RateAllTheThingsBackend.Core
 {
     public class EmailGateway : IEmailGateway
     {
         public void SendNewPasswordEmail(string email, string password, string alias = "")
         {
-            
-            throw new System.NotImplementedException();
+            using (var client = new SmtpClient())
+            {
+                client.Send("noreply@rateallthethings.com", email, "Password reset", password);
+            }
         }
     }
 }
