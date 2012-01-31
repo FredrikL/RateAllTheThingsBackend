@@ -7,7 +7,7 @@ namespace RateAllTheThingsBackend.Core
     {
         public string Generate()
         {
-            byte[] pw = new byte[50];
+            byte[] pw = new byte[15];
             var random = new RNGCryptoServiceProvider();
             random.GetBytes(pw);
             return Convert.ToBase64String(pw);
