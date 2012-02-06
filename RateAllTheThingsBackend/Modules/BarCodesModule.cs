@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Nancy;
 using Nancy.ModelBinding;
 using Nancy.Security;
+using RateAllTheThingsBackend.Integration;
 using RateAllTheThingsBackend.Models;
 using RateAllTheThingsBackend.Repositories;
 
@@ -12,8 +14,10 @@ namespace RateAllTheThingsBackend.Modules
         private readonly IBarCodes barCodes;
         private readonly IUsers users;
         private readonly IEventLog eventLog;
+        private readonly IApiSearch apiSearch;
 
-        public BarCodesModule(IBarCodes barCodes, IUsers users, IEventLog eventLog)
+        public BarCodesModule(IBarCodes barCodes, IUsers users,
+            IEventLog eventLog, IApiSearch apiSearch)
             : base("/BarCode")
         {
             this.RequiresAuthentication();
@@ -21,6 +25,7 @@ namespace RateAllTheThingsBackend.Modules
             this.barCodes = barCodes;
             this.users = users;
             this.eventLog = eventLog;
+            this.apiSearch = apiSearch;
 
             Get["/{id}"] = x =>
             {
@@ -36,7 +41,20 @@ namespace RateAllTheThingsBackend.Modules
                                               if (x.format != null && x.code != null)
                                               {
                                                   BarCode barcode = this.barCodes.Get(x.format, x.code, userId) ?? this.barCodes.Create(x.format, x.code, userId);
+                                                  if(barcode.New)
+                                                  {
+                                                      IEnumerable<ApiSearchHit> searchHits = this.apiSearch.Search(x.format, x.code);
+                                                      if(searchHits.Any())
+                                                      {
+                                                          var first = searchHits.First();
+                                                          barcode.Name = first.Name;
+                                                          barcode.Manufacturer = first.Manufacturer;
+                                                          // todo: userId ? -1 = system ?
+                                                          this.barCodes.Update(barcode, userId);
+                                                      }
 
+
+                                                  }
                                                   this.Log(barcode, userId, "GET");
 
                                                   return Response.AsJson(new[] {barcode});
