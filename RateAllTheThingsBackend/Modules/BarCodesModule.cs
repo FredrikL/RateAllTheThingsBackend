@@ -49,11 +49,8 @@ namespace RateAllTheThingsBackend.Modules
                                                           var first = searchHits.First();
                                                           barcode.Name = first.Name;
                                                           barcode.Manufacturer = first.Manufacturer;
-                                                          // todo: userId ? -1 = system ?
                                                           this.barCodes.Update(barcode, userId);
                                                       }
-
-
                                                   }
                                                   this.Log(barcode, userId, "GET");
 

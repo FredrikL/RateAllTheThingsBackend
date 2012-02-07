@@ -45,6 +45,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GoogleSearchApiForShoppingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PasswordGeneratorTests.cs" />
     <Compile Include="HashingTests.cs" />
@@ -54,6 +55,9 @@
       <Project>{65A96F60-7439-4DCE-BA98-62E52E34E14A}</Project>
       <Name>RateAllTheThingsBackend</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
