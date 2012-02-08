@@ -68,6 +68,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\BarCodeController.cs" />
+    <Compile Include="Controller\IBarCodeController.cs" />
     <Compile Include="Core\EmailGateway.cs" />
     <Compile Include="Core\Hashing.cs" />
     <Compile Include="Core\IEmailGateway.cs" />

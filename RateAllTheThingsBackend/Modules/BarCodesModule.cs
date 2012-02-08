@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Nancy;
 using Nancy.ModelBinding;
 using Nancy.Security;
-using RateAllTheThingsBackend.Integration;
+using RateAllTheThingsBackend.Controller;
 using RateAllTheThingsBackend.Models;
 using RateAllTheThingsBackend.Repositories;
 
@@ -11,86 +10,53 @@ namespace RateAllTheThingsBackend.Modules
 {
     public class BarCodesModule : NancyModule
     {
-        private readonly IBarCodes barCodes;
         private readonly IUsers users;
         private readonly IEventLog eventLog;
-        private readonly IApiSearchService apiSearchService;
+        private readonly IBarCodeController barCodeController;
 
-        public BarCodesModule(IBarCodes barCodes, IUsers users,
-            IEventLog eventLog, IApiSearchService apiSearchService)
+        public BarCodesModule(IUsers users,
+            IEventLog eventLog, IBarCodeController barCodeController)
             : base("/BarCode")
         {
             this.RequiresAuthentication();
 
-            this.barCodes = barCodes;
             this.users = users;
             this.eventLog = eventLog;
-            this.apiSearchService = apiSearchService;
+            this.barCodeController = barCodeController;
 
             Get["/{id}"] = x =>
             {
-                var userId = this.users.GetIdByUsername(this.Context.CurrentUser.UserName);
-                var barcode = this.barCodes.Get(x.id, userId);
+                var userId = this.users.GetIdByUsername(this.Context.CurrentUser.UserName);                
+                var barcode = this.barCodeController.Get(x.id, userId);
                 this.Log(barcode, userId, "GET");
                 return Response.AsJson(new[] { barcode });
             };
 
             Get["/{format}/{code}"] = x =>
                                           {                                              
-                                              var userId = this.users.GetIdByUsername(this.Context.CurrentUser.UserName);
-                                              if (x.format != null && x.code != null)
-                                              {
-                                                  BarCode barcode = this.barCodes.Get(x.format, x.code, userId) ?? this.barCodes.Create(x.format, x.code, userId);
-                                                  if(barcode.New)
-                                                  {
-                                                      IEnumerable<ApiSearchHit> searchHits = this.apiSearchService.Search(x.format, x.code);
-                                                      if(searchHits.Any())
-                                                      {
-                                                          var first = searchHits.First();
-                                                          barcode.Name = first.Name;
-                                                          barcode.Manufacturer = first.Manufacturer;
-                                                          this.barCodes.Update(barcode, userId);
-                                                      }
-                                                  }
-                                                  this.Log(barcode, userId, "GET");
+                                              if (x.format == null || x.code == null)
+                                                  return Response.AsJson(Enumerable.Empty<BarCode>());
 
-                                                  return Response.AsJson(new[] {barcode});
-                                              }
-                                              return Response.AsJson(Enumerable.Empty<BarCode>());
+                                              var userId = this.users.GetIdByUsername(this.Context.CurrentUser.UserName);
+                                              BarCode barcode = this.barCodeController.Get(x.format, x.code, userId);
+                                              this.Log(barcode, userId, "GET");
+                                              return Response.AsJson(new[] {barcode});
                                           };
             Post["/"] = x =>
                             {
                                 BarCode barCode = this.Bind<BarCode>();
                                 var userId = this.users.GetIdByUsername(this.Context.CurrentUser.UserName);
-                                var originalCode = this.barCodes.Get(barCode.Id, userId);
-                                if (originalCode.Format == barCode.Format && originalCode.Code == barCode.Code)
-                                {
-                                    // stuff that we allow to be updated
-                                    originalCode.Name = barCode.Name;
-                                    originalCode.Manufacturer = barCode.Manufacturer;
-                                    this.barCodes.Update(originalCode, userId);
-
-                                    this.Log(originalCode, userId, "UPDATE", barCode.Name);
-                                }
+                                var originalCode = this.barCodeController.Update(barCode, userId);
+                                this.Log(originalCode, userId, "UPDATE", barCode.Name);
                                 return Response.AsJson(new[] { originalCode });
                             };
 
             Post["/Rate/{id}/{value}"] = x =>
                                              {
                                                  var userId = this.users.GetIdByUsername(this.Context.CurrentUser.UserName);
-
-                                                 if (!this.barCodes.Exists(x.id))
-                                                     return Response.AsJson(Enumerable.Empty<BarCode>()); // return 404 ?
-                                                 if(x.value < 1 || x.value > 6)
-                                                     return Response.AsJson(Enumerable.Empty<BarCode>()); // return xxx ?
-
-                                                 if (!this.barCodes.HasRated(userId, x.id))
-                                                 {
-                                                     this.barCodes.Rate(x.id, (byte) x.value, userId);
-                                                     this.Log(x.id, userId, "RATE");
-                                                 }
-
-                                                 return Response.AsJson(new[] {this.barCodes.Get(x.id, userId)});
+                                                 var code = this.barCodeController.Rate(x.id, x.value, userId);
+                                                 this.Log(x.id, userId, "RATE");
+                                                 return Response.AsJson(new[] { code });
                                              };
         }
 
