@@ -1,10 +1,11 @@
 using Nancy;
 using Nancy.Authentication.Basic;
 using Nancy.Bootstrapper;
+using SharpBrake;
 
 namespace RateAllTheThingsBackend.Bootstrappers
 {
-    public class AuthenticationBootstrapper : DefaultNancyBootstrapper
+    public class RateAllTheThingsBootstrapper : DefaultNancyBootstrapper
     {
         protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, IPipelines pipelines)
         {
@@ -13,6 +14,12 @@ namespace RateAllTheThingsBackend.Bootstrappers
             pipelines.EnableBasicAuthentication(new BasicAuthenticationConfiguration(
                                                     container.Resolve<IUserValidator>(),
                                                     "RateAllTheThings"));
+
+            pipelines.OnError += (context, exception) =>
+            {
+                exception.SendToAirbrake();
+                return null;
+            };
         }
     }
 }

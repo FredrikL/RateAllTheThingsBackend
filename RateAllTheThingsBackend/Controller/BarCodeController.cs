@@ -27,7 +27,7 @@ namespace RateAllTheThingsBackend.Controller
             BarCode barcode = this.barCodes.Get(format, code, userId) ?? this.barCodes.Create(format, code, userId);
             if (barcode.New)
             {
-                IEnumerable<ApiSearchHit> searchHits = this.apiSearchService.Search(format, code);
+                IEnumerable<ApiSearchHit> searchHits = this.apiSearchService.Search(format, code).ToArray();
                 if (searchHits.Any())
                 {
                     var first = searchHits.First();
