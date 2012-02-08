@@ -81,7 +81,7 @@
     <Compile Include="Core\IEmailGateway.cs" />
     <Compile Include="Core\IPasswordGenerator.cs" />
     <Compile Include="Core\PasswordGenerator.cs" />
-    <Compile Include="DynamicJson.cs" />
+    <Compile Include="External\DynamicJson.cs" />
     <Compile Include="External\SqlMapper.cs" />
     <Compile Include="Integration\ApiSearchHit.cs" />
     <Compile Include="Integration\ApiServiceService.cs" />
