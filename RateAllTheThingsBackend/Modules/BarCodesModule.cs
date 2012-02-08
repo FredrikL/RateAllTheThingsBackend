@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Nancy;
 using Nancy.ModelBinding;
 using Nancy.Security;
@@ -54,7 +55,7 @@ namespace RateAllTheThingsBackend.Modules
             Post["/Rate/{id}/{value}"] = x =>
                                              {
                                                  var userId = this.users.GetIdByUsername(this.Context.CurrentUser.UserName);
-                                                 var code = this.barCodeController.Rate(x.id, x.value, userId);
+                                                 var code = this.barCodeController.Rate(x.id, (Byte)x.value, userId);
                                                  this.Log(x.id, userId, "RATE");
                                                  return Response.AsJson(new[] { code });
                                              };
