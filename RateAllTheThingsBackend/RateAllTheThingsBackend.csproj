@@ -76,8 +76,10 @@
     <Compile Include="DynamicJson.cs" />
     <Compile Include="External\SqlMapper.cs" />
     <Compile Include="Integration\ApiSearchHit.cs" />
+    <Compile Include="Integration\ApiServiceService.cs" />
     <Compile Include="Integration\GoogleSearchApiForShopping.cs" />
     <Compile Include="Integration\IApiSearch.cs" />
+    <Compile Include="Integration\IApiSearchService.cs" />
     <Compile Include="Models\BarCode.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\User.cs" />

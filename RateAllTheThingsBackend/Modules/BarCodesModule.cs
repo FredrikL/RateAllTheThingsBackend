@@ -14,10 +14,10 @@ namespace RateAllTheThingsBackend.Modules
         private readonly IBarCodes barCodes;
         private readonly IUsers users;
         private readonly IEventLog eventLog;
-        private readonly IApiSearch apiSearch;
+        private readonly IApiSearchService apiSearchService;
 
         public BarCodesModule(IBarCodes barCodes, IUsers users,
-            IEventLog eventLog, IApiSearch apiSearch)
+            IEventLog eventLog, IApiSearchService apiSearchService)
             : base("/BarCode")
         {
             this.RequiresAuthentication();
@@ -25,7 +25,7 @@ namespace RateAllTheThingsBackend.Modules
             this.barCodes = barCodes;
             this.users = users;
             this.eventLog = eventLog;
-            this.apiSearch = apiSearch;
+            this.apiSearchService = apiSearchService;
 
             Get["/{id}"] = x =>
             {
@@ -43,7 +43,7 @@ namespace RateAllTheThingsBackend.Modules
                                                   BarCode barcode = this.barCodes.Get(x.format, x.code, userId) ?? this.barCodes.Create(x.format, x.code, userId);
                                                   if(barcode.New)
                                                   {
-                                                      IEnumerable<ApiSearchHit> searchHits = this.apiSearch.Search(x.format, x.code);
+                                                      IEnumerable<ApiSearchHit> searchHits = this.apiSearchService.Search(x.format, x.code);
                                                       if(searchHits.Any())
                                                       {
                                                           var first = searchHits.First();

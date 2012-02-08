@@ -17,26 +17,32 @@ namespace RateAllTheThingsBackend.Integration
         {
             var result = new ApiSearchHit();
             var url = string.Format(baseUrl, ConfigurationManager.AppSettings["GOOGLE_SEARCH_API_KEY"], code);
-            using(var webClient = new WebClient())
+            try
             {
-                var data = webClient.DownloadString(url);
-                dynamic x = DynamicJson.Parse(data);
-                if(x.IsDefined("items"))
+                using (var webClient = new WebClient())
                 {
-                    foreach (dynamic item in x.items)
+                    var data = webClient.DownloadString(url);
+                    dynamic x = DynamicJson.Parse(data);
+                    if (x.IsDefined("items"))
                     {
-                        if(item.product())
+                        foreach (dynamic item in x.items)
                         {
-                            var product = item.product;
-                            if (product.title() && string.IsNullOrEmpty(result.Name))
-                                result.Name = product.title;
-                            if (product.brand() && string.IsNullOrEmpty(result.Manufacturer))
-                                result.Manufacturer = product.brand;
+                            if (item.product())
+                            {
+                                var product = item.product;
+                                if (product.title() && string.IsNullOrEmpty(result.Name))
+                                    result.Name = product.title;
+                                if (product.brand() && string.IsNullOrEmpty(result.Manufacturer))
+                                    result.Manufacturer = product.brand;
+                            }
                         }
                     }
-                }                
+                }
+            }catch(Exception)
+            {
+                // pokemon!
             }
-            
+
             if (result.IsEmpty) return Enumerable.Empty<ApiSearchHit>();
 
             return new[] {result};            
