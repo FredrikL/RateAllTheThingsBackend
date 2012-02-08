@@ -1,3 +1,4 @@
+using System;
 using Nancy;
 
 namespace RateAllTheThingsBackend.Modules
@@ -10,6 +11,8 @@ namespace RateAllTheThingsBackend.Modules
                            {
                                return View["index"];
                            };
+
+            Get["/troll"] = x => { throw new Exception("troll lol!?"); };
         }
     }
 }
