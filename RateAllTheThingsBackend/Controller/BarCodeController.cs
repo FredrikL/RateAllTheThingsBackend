@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RateAllTheThingsBackend.Integration;
 using RateAllTheThingsBackend.Models;
@@ -55,7 +56,9 @@ namespace RateAllTheThingsBackend.Controller
 
         public BarCode Rate(long id, byte rating, long userId)
         {
-            if (!this.barCodes.Exists(id) || (rating < 1 || rating > 6))
+            if (!this.barCodes.Exists(id))
+                throw new ArgumentException("barcode not found");
+            if (rating < 1 || rating > 6)
                 return this.barCodes.Get(id, userId);
 
             if (!this.barCodes.HasRated(userId, id))
