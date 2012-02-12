@@ -114,9 +114,9 @@ namespace RateAllTheThingsBackend.Repositories
             {
                 connection.Open();                
                 if(connection.Query<User>("SELECT Id FROM Users WHERE Email = @EMAIL and Password = @PASSWORD", new { EMAIL = username, PASSWORD = hashedpassword }).Any())
-                    return new User() {UserName = username};
+                    return new UserIdentity() {UserName = username};
             }
-            return new User();
+            return new UserIdentity();
         }
         
     }
