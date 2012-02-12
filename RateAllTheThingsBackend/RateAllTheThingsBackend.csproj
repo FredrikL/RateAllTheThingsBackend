@@ -76,6 +76,8 @@
   <ItemGroup>
     <Compile Include="Controller\BarCodeController.cs" />
     <Compile Include="Controller\IBarCodeController.cs" />
+    <Compile Include="Controller\IUserController.cs" />
+    <Compile Include="Controller\UserController.cs" />
     <Compile Include="Core\EmailGateway.cs" />
     <Compile Include="Core\Hashing.cs" />
     <Compile Include="Core\IEmailGateway.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Bootstrappers\RateAllTheThingsBootstrapper.cs" />
+    <Compile Include="Modules\AccontModule.cs" />
     <Compile Include="Modules\AuthModule.cs" />
     <Compile Include="Modules\BarCodesModule.cs" />
     <Compile Include="Modules\CommentsModule.cs" />

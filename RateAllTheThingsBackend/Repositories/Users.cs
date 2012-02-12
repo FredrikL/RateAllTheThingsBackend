@@ -1,3 +1,4 @@
+using System;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
@@ -45,6 +46,18 @@ namespace RateAllTheThingsBackend.Repositories
             return null;
         }
 
+        public User Get(long id)
+        {
+            using (SqlConnection connection = Connection)
+            {
+                connection.Open();
+                var users = connection.Query<User>("SELECT Id, Email, Alias FROM Users WHERE Id = @Id", new { Id = id }).ToArray();
+                if (users.Any())
+                    return users.Single();
+            }
+            return null;
+        }
+
         public bool Auth(string email, string password)
         {
             var hashedpassword = this.hashing.Hash(password);
@@ -80,6 +93,15 @@ namespace RateAllTheThingsBackend.Repositories
             {
                 connection.Open();
                 connection.Execute("UPDATE Users set Password = @Password where Id = @Id", new {Password = hashedPassword, Id = id});
+            }
+        }
+
+        public void Update(User user)
+        {
+            using (SqlConnection connection = Connection)
+            {
+                connection.Open();
+                connection.Execute("UPDATE Users set Alias = @Alias where Id = @Id", new { Alias = user.Alias, Id = user.Id });
             }
         }
 
