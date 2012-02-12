@@ -25,8 +25,8 @@ namespace RateAllTheThingsBackend.Modules
                                 if(user.Id == userId)
                                     this.userController.Update(user);
                                 else
-                                    return Response.AsJson(false);
-                                return Response.AsJson(true);
+                                    return Response.AsJson(new []{false});
+                                return Response.AsJson(new []{true});
                             };
 
             Get["/"] = x =>
