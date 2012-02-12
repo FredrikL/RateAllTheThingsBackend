@@ -13,6 +13,8 @@ namespace RateAllTheThingsBackend.Models
 
         public string Avatar { get; set; }
 
+        public string AuthorName { get; set; }
+
         public DateTime CreatedDate { get; set; }
     }
 }
