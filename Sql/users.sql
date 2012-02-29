@@ -1,7 +1,3 @@
-USE [db7f2bc721b4dc4f51a9c29fc80128fe45]
-GO
-
-/****** Object:  Table [dbo].[Users]    Script Date: 01/24/2012 21:35:53 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -20,4 +16,5 @@ CREATE TABLE [dbo].[Users](
 ) ON [PRIMARY]
 
 GO
+
 

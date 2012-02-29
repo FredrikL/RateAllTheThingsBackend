@@ -1,7 +1,3 @@
-USE [db7f2bc721b4dc4f51a9c29fc80128fe45]
-GO
-
-/****** Object:  Table [dbo].[Rating]    Script Date: 01/24/2012 21:36:16 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -29,4 +25,5 @@ GO
 
 ALTER TABLE [dbo].[Rating] CHECK CONSTRAINT [FK_Rating_Users]
 GO
+
 

@@ -1,7 +1,3 @@
-USE [db7f2bc721b4dc4f51a9c29fc80128fe45]
-GO
-
-/****** Object:  Table [dbo].[BarCodes]    Script Date: 01/24/2012 21:35:16 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -15,6 +11,7 @@ CREATE TABLE [dbo].[BarCodes](
 	[Name] [nvarchar](200) NULL,
 	[CreatedDate] [datetime] NULL,
 	[CreatedBy] [bigint] NOT NULL,
+	[Manufacturer] [nvarchar](200) NULL,
  CONSTRAINT [PK_BarCodes] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
@@ -32,4 +29,5 @@ GO
 
 ALTER TABLE [dbo].[BarCodes] ADD  CONSTRAINT [DF_BarCodes_CreatedDate]  DEFAULT (getdate()) FOR [CreatedDate]
 GO
+
 

@@ -1,7 +1,3 @@
-USE [db7f2bc721b4dc4f51a9c29fc80128fe45]
-GO
-
-/****** Object:  Table [dbo].[Comments]    Script Date: 01/24/2012 21:35:37 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -44,4 +40,5 @@ GO
 
 ALTER TABLE [dbo].[Comments] ADD  CONSTRAINT [DF_Comments_CreatedDate]  DEFAULT (getdate()) FOR [CreatedDate]
 GO
+
 

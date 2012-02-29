@@ -1,7 +1,3 @@
-USE [db7f2bc721b4dc4f51a9c29fc80128fe45]
-GO
-
-/****** Object:  Table [dbo].[Log]    Script Date: 01/24/2012 21:36:46 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -28,4 +24,5 @@ GO
 
 ALTER TABLE [dbo].[Log] ADD  CONSTRAINT [DF_Log_TimeStamp]  DEFAULT (getdate()) FOR [TimeStamp]
 GO
+
 
